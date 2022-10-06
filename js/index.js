@@ -1,62 +1,59 @@
 // ITERATION 1
 
+let cartElement = document.querySelector("#cart tbody");
+
 function updateSubtotal(product) {
-  console.log('Calculating subtotal, yey!');
   const price = product.querySelector('.price span').innerText;
   const quantity = product.querySelector('.quantity input').value;
   let subtotal = price * quantity;
   let subtotalElement = product.querySelector('.subtotal span');
-  subtotalElement.innerText = subtotal
-  
-  console.log(subtotal)
-  //... your code goes here
-}
+  subtotalElement.innerText = subtotal;
+  return subtotal
+  }
 
 function calculateAll() {
+  let allProduct = document.querySelectorAll('.product');
+  let copyAllProduct = [...allProduct];
   let totalPrice = 0;
-  // code in the following two lines is added just for testing purposes.
-  // it runs when only iteration 1 is completed. at later point, it can be removed.
-  const allProduct = document.querySelectorAll('.product');
-  allProduct.forEach((Product) =>{
-    let allProductElement = updateSubtotal(Product);
-    totalPrice += allProductElement;
-   
-  })
+  for (let i=0; i<copyAllProduct.length; i++){
+    totalPrice += updateSubtotal(copyAllProduct[i]);
+    
+  }
 
-  let totalValue = document.getElementById('#total-value span');
-  totalValue.innerText = totalPrice;
-  console.log(totalPrice)
-
-
-  
-  
-  //console.log(singleProduct)
-  // end of test
-
-  // ITERATION 2
-  //... your code goes here
-
-  // ITERATION 3
-
+  totalValue = document.getElementById('total-value');
+  totalValue.innerHTML = `Total: ${totalPrice}`;
+ 
 }
 
 // ITERATION 4
 
 function removeProduct(event) {
-  const target = event.currentTarget;
-  console.log('The target in remove is:', target);
-  //... your code goes here
+
+    const target = event.currentTarget;
+    console.log('The target in remove is:', target);
+    
+    const productToRemove = target.parentNode.parentNode;
+    cartElement.removeChild(productToRemove);
+  
+    calculateAll();
+      
+  function bindDeleteButton(deleteButton) {
+    deleteButton.addEventListener("click", removeProduct); 
+  }
+  
 }
 
 // ITERATION 5
 
-function createProduct() {
-  //... your code goes here
-}
+// function createProduct() {
+//   //... your code goes here
+// }
 
 window.addEventListener('load', () => {
   const calculatePricesBtn = document.getElementById('calculate');
   calculatePricesBtn.addEventListener('click', calculateAll);
+  const removeButtons = document.getElementsByClassName('btn-remove');
+  [...removeButtons].forEach(button => button.addEventListener('click', removeProduct));
 
-  //... your code goes here
 });
+
